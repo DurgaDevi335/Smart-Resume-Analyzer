@@ -5,4 +5,5 @@ werkzeug
 pandas
 scikit-learn
 pdfminer.six
+fpdf
 gunicorn
