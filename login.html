@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Smart ATS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 mt-5">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
+                    <h2 class="fw-bold">Welcome Back</h2>
+                    <p class="text-muted">Log in to check your ATS score</p>
+                </div>
+                
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                        Login <i class="fas fa-sign-in-alt ms-1"></i>
+                    </button>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p class="mb-0 text-muted">Don't have an account? 
+                        <a href="{{ url_for('register') }}" class="text-primary text-decoration-none fw-bold">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Report - Smart ATS{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Analysis Report</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold"><i class="fas fa-chart-pie me-2 text-primary"></i>Resume Performance Analysis</h2>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-5 text-center border-end">
+                        <h6 class="text-muted small fw-bold">ATS MATCH SCORE</h6>
+                        <div style="height: 180px; position: relative;">
+                            <canvas id="scoreChart"></canvas>
+                            <div style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);">
+                                <h1 class="fw-bold mb-0 text-primary">{{ results.score }}%</h1>
+                            </div>
+                        </div>
+                        <p class="mt-n3 fw-bold text-{{ 'success' if results.score >= 70 else 'warning' }}">
+                            {{ results.recommendation }}
+                        </p>
+                    </div>
+                    <div class="col-md-7 ps-md-4">
+                        <h5 class="fw-bold mb-3">Structural Integrity</h5>
+                        <div class="mb-3">
+                            <label class="small text-muted d-block mb-1">Found Sections</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for s in results.sections_found %}
+                                <span class="badge bg-success-subtle text-success border border-success rounded-pill px-3">
+                                    <i class="fas fa-check-circle me-1"></i>{{ s }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if results.missing_sections %}
+                        <div>
+                            <label class="small text-muted d-block mb-1">Missing Sections</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for s in results.missing_sections %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger rounded-pill px-3">
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ s }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <h5 class="fw-bold mb-3"><i class="fas fa-brain me-2 text-info"></i>Keyword Gap Analysis</h5>
+                <p class="text-muted small">We compared your resume against industry-standard keywords. To improve your score, consider adding these terms:</p>
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    {% for skill in results.missing_skills %}
+                    <span class="badge bg-light text-dark border p-2 px-3 fw-normal">
+                        <i class="fas fa-plus-circle text-primary me-2"></i>{{ skill }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold mb-3"><i class="fas fa-clipboard-list me-2 text-warning"></i>Actionable Plan</h5>
+                <ul class="list-group list-group-flush">
+                    {% for sug in results.suggestions %}
+                    <li class="list-group-item px-0 border-0 d-flex align-items-start">
+                        <i class="fas fa-arrow-right text-primary mt-1 me-3"></i>
+                        <span>{{ sug }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-lg border-primary d-flex flex-column" style="height: 650px; position: sticky; top: 20px;">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold"><i class="fas fa-robot me-2"></i>Interactive Analysis Coach</h6>
+                    <button class="btn btn-sm btn-outline-light border-0" onclick="clearChat()"><i class="fas fa-redo"></i></button>
+                </div>
+                
+                <div id="chat-box" class="card-body overflow-auto p-3 bg-light" style="flex-grow: 1;">
+                    <div class="mb-3">
+                        <div class="chat-bubble-coach p-2 px-3 shadow-sm small">
+                            <strong>Coach:</strong> I've analyzed your results! Pick a coaching topic below to see how to improve.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 border-top bg-white">
+                    <p class="x-small fw-bold text-muted text-center text-uppercase mb-2">Select a Coaching Topic</p>
+                    <div class="row g-2">
+                        <div class="col-6"><button class="btn btn-outline-primary btn-xs w-100" onclick="quickAsk('What are the top 3 things to fix?')">Top 3 Fixes</button></div>
+                        <div class="col-6"><button class="btn btn-outline-primary btn-xs w-100" onclick="quickAsk('Which section is weakest?')">Weakest Area</button></div>
+                        <div class="col-6"><button class="btn btn-outline-primary btn-xs w-100" onclick="quickAsk('How to add metrics?')">Add Metrics</button></div>
+                        <div class="col-6"><button class="btn btn-outline-primary btn-xs w-100" onclick="quickAsk('How to tailor to this JD?')">Tailoring Tips</button></div>
+                        <div class="col-6"><button class="btn btn-outline-primary btn-xs w-100" onclick="quickAsk('Summary rewrite tips?')">Summary Tips</button></div>
+                        <div class="col-6"><button class="btn btn-outline-primary btn-xs w-100" onclick="quickAsk('Is the layout ATS-safe?')">Layout Safety</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-xs { padding: 5px 2px; font-size: 0.7rem; border-radius: 8px; font-weight: 600; }
+    .bg-success-subtle { background-color: #d1e7dd; }
+    .bg-danger-subtle { background-color: #f8d7da; }
+    .chat-bubble-user { background: #0d6efd; color: white; border-radius: 15px 15px 0 15px; float: right; clear: both; margin-bottom: 10px; max-width: 90%; }
+    .chat-bubble-coach { background: white; color: #333; border-radius: 15px 15px 15px 0; border: 1px solid #dee2e6; float: left; clear: both; margin-bottom: 10px; max-width: 90%; }
+    .mt-n3 { margin-top: -1.5rem !important; }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Gauge Chart Logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+        const score = {{ results.score }};
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [score, 100 - score],
+                    backgroundColor: [score >= 70 ? '#198754' : '#ffc107', '#f2f2f2'],
+                    borderWidth: 0, circumference: 180, rotation: 270, cutout: '85%'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+        });
+    });
+
+    // Chat Logic
+    function quickAsk(text) {
+        const box = document.getElementById('chat-box');
+        box.innerHTML += `<div class="chat-bubble-user p-2 px-3 shadow-sm small">${text}</div>`;
+        box.scrollTop = box.scrollHeight;
+
+        fetch('/get_chat_response', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        })
+        .then(res => res.json())
+        .then(data => {
+            setTimeout(() => {
+                box.innerHTML += `<div class="chat-bubble-coach p-2 px-3 shadow-sm small"><strong>Coach:</strong> ${data.response}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 400);
+        });
+    }
+
+    function clearChat() {
+        document.getElementById('chat-box').innerHTML = '<div class="mb-3"><div class="chat-bubble-coach p-2 px-3 shadow-sm small"><strong>Coach:</strong> Chat reset. Select a topic above.</div></div>';
+    }
+</script>
+{% endblock %}

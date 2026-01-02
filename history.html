@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Scan History - Smart ATS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">Analysis History</h2>
+            <p class="text-muted">Track and manage your previous resume scans.</p>
+        </div>
+        <a href="{{ url_for('analyze') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> New Analysis
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3">ID</th>
+                            <th class="py-3">Date & Time</th>
+                            <th class="py-3">Job Role / Description</th>
+                            <th class="py-3 text-center">ATS Score</th>
+                            <th class="py-3 text-center">Status</th>
+                            <th class="py-3 text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in history %}
+                        <tr>
+                            <td class="ps-4 text-muted small">#{{ item.id }}</td>
+                            <td>
+                                <div class="fw-bold">{{ item.date.strftime('%b %d, %Y') }}</div>
+                                <div class="small text-muted">{{ item.date.strftime('%I:%M %p') }}</div>
+                            </td>
+                            <td>
+                                <span class="d-inline-block text-truncate" style="max-width: 250px;">
+                                    {{ item.job_title if item.job_title else "General Analysis (No JD)" }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="fw-bold text-{{ 'success' if item.score >= 70 else 'warning' if item.score >= 40 else 'danger' }}">
+                                    {{ item.score }}%
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                {% if item.score >= 70 %}
+                                    <span class="badge bg-success-light text-success border border-success px-3">Strong Match</span>
+                                {% elif item.score >= 40 %}
+                                    <span class="badge bg-warning-light text-warning border border-warning px-3">Average</span>
+                                {% else %}
+                                    <span class="badge bg-danger-light text-danger border border-danger px-3">Weak Match</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <a href="/report/{{ item.id }}" class="btn btn-sm btn-outline-primary" title="View Detailed Report">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <form action="/delete-history/{{ item.id }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this scan?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <div class="mb-3">
+                                    <i class="fas fa-history fa-3x text-light"></i>
+                                </div>
+                                <h5 class="text-muted">No scan history found.</h5>
+                                <p class="text-muted small">Start by uploading your resume in the Analysis section.</p>
+                                <a href="{{ url_for('analyze') }}" class="btn btn-sm btn-primary mt-2">Analyze Now</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Custom badge styling for a softer look */
+    .bg-success-light { background-color: #e8f5e9; }
+    .bg-warning-light { background-color: #fffde7; }
+    .bg-danger-light { background-color: #ffebee; }
+    
+    .table-hover tbody tr:hover {
+        background-color: #fbfcfe;
+        transition: background-color 0.2s ease;
+    }
+    
+    .text-truncate {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}

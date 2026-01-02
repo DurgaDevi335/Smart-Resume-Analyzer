@@ -1,0 +1,75 @@
+/* Dashboard Theme Colors */
+:root {
+    --primary-blue: #3498db;
+    --dark-navy: #2c3e50;
+    --success-green: #2ecc71;
+    --danger-red: #e74c3c;
+    --light-gray: #f4f7f6;
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+body {
+    background-color: var(--light-gray);
+    color: #333;
+}
+
+/* Card Enhancements */
+.card {
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Upload Drop Area */
+.upload-box {
+    border: 2px dashed #cbd5e0;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s border;
+}
+
+.upload-box:hover {
+    border-color: var(--primary-blue);
+    background-color: #f0f9ff !important;
+}
+
+/* Custom Badges */
+.badge-ats {
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+/* Chatbot UI Enhancements */
+#chat-box {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.coach-msg {
+    background: #eef2f7;
+    color: #34495e;
+    border-radius: 15px 15px 15px 0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.user-msg {
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 15px 15px 0 15px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Responsive Sidebar adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 15px;
+    }
+}

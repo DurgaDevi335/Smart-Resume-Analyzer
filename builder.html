@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Builder - Smart ATS{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0 fw-bold"><i class="fas fa-magic me-2"></i>smart Resume Builder</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{{ url_for('generate_resume') }}" method="POST">
+                        
+                        <div class="section-title mb-3">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">1. Personal Information</h5>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Full Name</label>
+                                <input type="text" name="full_name" class="form-control" placeholder="John Doe" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Phone</label>
+                                <input type="text" name="phone" class="form-control" placeholder="+91 00000 00000" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Location</label>
+                                <input type="text" name="location" class="form-control" placeholder="City, Country" required>
+                            </div>
+                        </div>
+
+                        <div class="section-title mb-3">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">2. Professional Summary</h5>
+                        </div>
+                        <div class="mb-4">
+                            <textarea name="summary" class="form-control live-input" rows="3" placeholder="Briefly describe your career goals..."></textarea>
+                        </div>
+
+                        <div class="section-title mb-3">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">3. Work Experience</h5>
+                        </div>
+                        <div class="mb-4">
+                            <textarea name="experience" class="form-control live-input" rows="6" 
+                                placeholder="Company | Role | Dates&#10;- Bullet point 1&#10;- Bullet point 2&#10;&#10;Next Company | Role | Dates..."></textarea>
+                            <div class="form-text text-info small">
+                                <i class="fas fa-info-circle"></i> <strong>Tip:</strong> Press <strong>Enter twice</strong> between different jobs. Use ( - ) for bullets.
+                            </div>
+                        </div>
+
+                        <div class="section-title mb-3">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">4. Projects</h5>
+                        </div>
+                        <div class="mb-4">
+                            <textarea name="projects" class="form-control live-input" rows="5" 
+                                placeholder="Project Name | Tech Used&#10;- Result 1...&#10;&#10;Second Project..."></textarea>
+                        </div>
+
+                        <div class="section-title mb-3">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">5. Education</h5>
+                        </div>
+                        <div class="mb-4">
+                            <textarea name="education" class="form-control live-input" rows="3" placeholder="University | Degree | Year"></textarea>
+                        </div>
+
+                        <div class="section-title mb-3">
+                            <h5 class="fw-bold text-primary border-bottom pb-2">6. Skills</h5>
+                        </div>
+                        <div class="mb-4">
+                            <textarea name="skills" class="form-control live-input" rows="2" placeholder="Python, Java, SQL, etc."></textarea>
+                        </div>
+
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <h5 class="fw-bold text-primary border-bottom pb-2 small">7. Certifications</h5>
+                                <textarea name="certifications" class="form-control live-input" rows="3" placeholder="AWS, Google Cloud, etc."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="fw-bold text-primary border-bottom pb-2 small">8. Achievements</h5>
+                                <textarea name="achievements" class="form-control live-input" rows="3" placeholder="Winner of Hackathon..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold shadow">
+                                <i class="fas fa-file-pdf me-2"></i> Generate PDF Resume
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 20px; z-index: 1000;">
+                <div class="card border-primary shadow-sm">
+                    <div class="card-header bg-light fw-bold text-primary small">
+                        <i class="fas fa-eye me-2"></i> FORMATTING PREVIEW
+                    </div>
+                    <div class="card-body bg-white" id="live-preview" style="font-size: 0.8rem; height: 500px; overflow-y: auto; font-family: 'Arial', sans-serif;">
+                        <p class="text-muted italic">Start typing to see your resume formatting...</p>
+                    </div>
+                </div>
+                <div class="alert alert-warning mt-3 small shadow-sm">
+                    <i class="fas fa-lightbulb me-2"></i> <strong>Why this matters?</strong> 
+                    Separating jobs with double spaces helps the ATS Model distinguish between different roles during analysis.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .live-input:focus { border-color: #0d6efd; box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15); }
+    textarea { resize: none; }
+    #live-preview { white-space: pre-wrap; line-height: 1.4; color: #333; }
+    .preview-header { font-weight: bold; color: #000; border-bottom: 1px solid #eee; margin-top: 10px; text-transform: uppercase; }
+</style>
+
+<script>
+    const inputs = document.querySelectorAll('.live-input, input');
+    const preview = document.getElementById('live-preview');
+
+    function updatePreview() {
+        const data = {};
+        inputs.forEach(input => data[input.name] = input.value);
+
+        let html = `<div class="text-center"><strong>${data.full_name || 'YOUR NAME'}</strong><br>`;
+        html += `<small>${data.email || 'email'} | ${data.phone || 'phone'} | ${data.location || 'location'}</small></div><br>`;
+
+        const sections = [
+            ['SUMMARY', data.summary],
+            ['EXPERIENCE', data.experience],
+            ['PROJECTS', data.projects],
+            ['EDUCATION', data.education],
+            ['SKILLS', data.skills]
+        ];
+
+        sections.forEach(([title, content]) => {
+            if (content) {
+                html += `<div class="preview-header">${title}</div><div>${content}</div>`;
+            }
+        });
+
+        preview.innerHTML = html;
+    }
+
+    inputs.forEach(input => input.addEventListener('input', updatePreview));
+</script>
+{% endblock %}
