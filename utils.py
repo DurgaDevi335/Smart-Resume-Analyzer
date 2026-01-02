@@ -11,10 +11,29 @@ def extract_text_from_pdf(path):
     except: pass
     return text
 
+import os
+from werkzeug.utils import secure_filename
+
 def save_upload(file, folder):
-    if not file: return None
-    if not os.path.exists(folder): os.makedirs(folder)
-    path = os.path.join(folder, file.filename)
+    # 1. Check if the file actually exists
+    if not file or file.filename == '':
+        return None
+    
+    # 2. Check extension (Fixes the Google Drive generic MIME type issue)
+    allowed_ext = file.filename.lower().endswith('.pdf')
+    if not allowed_ext:
+        return None
+
+    # 3. Ensure the folder exists
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    
+    # 4. Clean the filename (removes spaces/special characters)
+    # This is very important for Linux servers like Render
+    filename = secure_filename(file.filename)
+    path = os.path.join(folder, filename)
+    
+    # 5. Save the file
     file.save(path)
     return path
 
@@ -72,4 +91,5 @@ def generate_resume_pdf(data, file_path):
         return True
     except Exception as e:
         print(f"Error: {e}")
+
         return False
