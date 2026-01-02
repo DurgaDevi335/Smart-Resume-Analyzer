@@ -6,4 +6,5 @@ pandas
 scikit-learn
 pdfminer.six
 fpdf
+pymupdf
 gunicorn
