@@ -49,7 +49,7 @@ Smart-Resume-Analyzer/
 
 ## 🚀 How to Run Locally
 
-### 1️⃣ Clone the Repository
+## 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/DurgaDevi335/Smart-Resume-Analyzer.git
 cd Smart-Resume-Analyzer
@@ -80,7 +80,7 @@ http://127.0.0.1:5000/
 
 
 
-🎯 Use Cases
+### 🎯 Use Cases
 
 Students and freshers improving resumes
 
@@ -92,7 +92,7 @@ Academic projects involving NLP and ML
 
 ATS (Applicant Tracking System) simulation
 
-📈 Future Enhancements
+### 📈 Future Enhancements
 
 PDF resume parsing
 
@@ -104,7 +104,7 @@ User authentication & profile history
 
 AI-based resume improvement suggestions
 
-🧪 Machine Learning Logic (Brief)
+### 🧪 Machine Learning Logic (Brief)
 
 Text preprocessing (lowercasing, cleaning)
 
@@ -116,7 +116,7 @@ Rule-based section detection
 
 Keyword gap analysis
 
-👩‍💻 Author
+###👩‍💻 Author
 
 Durga Devi
 B.Tech (CSE – Cybersecurity)
