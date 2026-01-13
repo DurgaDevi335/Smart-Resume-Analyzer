@@ -49,33 +49,35 @@ Smart-Resume-Analyzer/
 
 ## 🚀 How to Run Locally
 
- 1️⃣ Clone the Repository
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/DurgaDevi335/Smart-Resume-Analyzer.git
 cd Smart-Resume-Analyzer
+```
 
-2️⃣ Create Virtual Environment (Optional but Recommended)
+### 2️⃣ Create Virtual Environment (Optional but Recommended)
+```
 python -m venv venv
-
+```
 
 Activate the environment:
 
 Windows
-
+```
 venv\Scripts\activate
-
+```
 
 Linux / Mac
-
+```
 source venv/bin/activate
-
-3️⃣ Install Dependencies
+```
+### 3️⃣ Install Dependencies
 pip install -r requirements.txt
 
-4️⃣ Run the Application
+### 4️⃣ Run the Application
 python app.py
 
-5️⃣ Open in Browser
+### 5️⃣ Open in Browser
 http://127.0.0.1:5000/
 
 
@@ -116,7 +118,7 @@ Rule-based section detection
 
 Keyword gap analysis
 
-###👩‍💻 Author
+### 👩‍💻 Author
 
 Durga Devi
 B.Tech (CSE – Cybersecurity)
