@@ -49,7 +49,7 @@ Smart-Resume-Analyzer/
 
 ## 🚀 How to Run Locally
 
-## 1️⃣ Clone the Repository
+ 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/DurgaDevi335/Smart-Resume-Analyzer.git
 cd Smart-Resume-Analyzer
