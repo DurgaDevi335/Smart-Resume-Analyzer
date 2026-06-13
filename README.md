@@ -392,11 +392,11 @@ Smart-Resume-Analyzer/
 
 ## 🏠 Dashboard
 
-Add dashboard screenshot here.
 
-```markdown
+
+
 ![Dashboard](screenshots/dashboard.png)
-```
+
 
 ---
 
@@ -410,23 +410,15 @@ The built-in Resume Builder allows users to create a professional resume from sc
 
 ## 📄 Resume Analysis
 
-Add Resume Analysis Result Screenshot.
 
-```markdown
+
 ![Resume Analysis](screenshots/resume_analysis.png)
-```
+
 
 ---
 
-## 🎯 Resume-JD Matching
 
-Add Resume-JD Matching Screenshot.
 
-```markdown
-![JD Matching](screenshots/jd_matching.png)
-```
-
----
 
 # 🔮 Future Enhancements
 
