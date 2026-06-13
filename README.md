@@ -1,8 +1,8 @@
 # 📄 Smart Resume Analyzer
 
-A web-based **NLP-powered Smart Resume Analyzer** designed to help students, freshers, and job seekers improve their resumes, increase ATS compatibility, and evaluate resume-job description matching.
+An NLP-powered **Smart Resume Analyzer and Resume Builder** designed to help students, freshers, and job seekers create professional resumes, evaluate ATS compatibility, and measure resume-job description matching.
 
-The system analyzes resumes uploaded in PDF or DOCX format, generates ATS-style scores, identifies missing skills and sections, and provides personalized suggestions to improve placement readiness.
+The system provides intelligent resume analysis, ATS scoring, skill-gap detection, job compatibility evaluation, and a built-in resume builder with real-time formatting preview.
 
 ---
 
@@ -18,108 +18,136 @@ The system analyzes resumes uploaded in PDF or DOCX format, generates ATS-style 
 
 # 📌 Problem Statement
 
-Many students and job seekers struggle to understand whether their resumes meet recruiter expectations and Applicant Tracking System (ATS) requirements.
+Many students and job seekers struggle to create professional resumes and understand recruiter expectations.
 
 Common challenges include:
 
+- Not knowing how to structure a resume
 - Missing important resume sections
 - Low ATS compatibility
+- Poor keyword optimization
 - Lack of relevant technical skills
-- Weak project descriptions
-- Poor alignment with job descriptions
+- Difficulty matching resumes with job descriptions
 
-This project addresses these challenges by automatically analyzing resumes and providing actionable recommendations.
+To address these challenges, this project provides an end-to-end platform that helps users build resumes, evaluate resume quality, identify missing skills, and improve placement readiness.
 
 ---
 
 # 🎯 Objectives
 
-- Analyze resumes automatically
-- Generate ATS-style evaluation scores
-- Detect missing sections and skills
+- Build ATS-friendly resumes from scratch
+- Analyze resume quality automatically
+- Generate ATS-style scores
+- Identify missing sections and skills
 - Match resumes with job descriptions
 - Provide personalized improvement suggestions
 - Improve placement readiness and recruiter visibility
 
 ---
 
-# ✨ Features
+# ✨ Key Features
 
-## 📄 Resume-Only Analysis
+## 📄 Resume Analysis
 
-When only a resume is uploaded, the system:
-
-- Extracts resume content
-- Evaluates resume structure
-- Detects technical skills
-- Analyzes achievement-oriented language
-- Measures readability and content quality
-- Generates ATS score
-- Provides improvement suggestions
-
-### ATS Evaluation Factors
-
-- Education Section
-- Skills Section
-- Projects Section
-- Experience Section
-- Technical Skills Coverage
-- Action Verbs
-- Quantified Achievements
-- Resume Length & Readability
+- ATS Score Generation
+- Resume Quality Assessment
+- Structure Analysis
+- Technical Skill Detection
+- Experience Evaluation
+- Readability Analysis
+- Personalized Suggestions
 
 ---
 
-## 🎯 Resume + Job Description Matching
+## 🎯 Resume-JD Matching
 
-When both a resume and job description are uploaded, the system:
+- Resume and Job Description Comparison
+- TF-IDF Vectorization
+- Cosine Similarity Analysis
+- Skill Gap Detection
+- Missing Skill Identification
+- Match Score Calculation
+- Job Compatibility Analysis
 
-- Extracts text from both documents
-- Performs text preprocessing
-- Converts text into TF-IDF vectors
-- Computes cosine similarity
-- Identifies matching skills
-- Detects missing skills
-- Calculates compatibility score
-- Generates targeted recommendations
+---
+
+## 📝 Resume Builder
+
+- Create Resume from Scratch
+- ATS-Friendly Resume Structure
+- Professional Resume Sections
+- Real-Time Formatting Preview
+- Dynamic Resume Generation
+- Beginner-Friendly Interface
+
+This feature is especially useful for students and freshers who do not already have a resume.
+
+---
+
+## 📂 Resume History
+
+- Track Previous Resume Analyses
+- View Earlier Results
+- Access Historical Resume Evaluations
 
 ---
 
 # 🏗️ System Architecture
 
 ```text
-Resume Upload
-        │
-        ▼
-Text Extraction
-(PyMuPDF / docx2txt)
-        │
-        ▼
-Text Preprocessing
-        │
-        ▼
-Resume Only? ──────────────► ATS Evaluation Engine
-        │                           │
-        │                           ▼
-        │                    ATS Score
-        │                    Suggestions
-        │
-        ▼
-Resume + JD
-        │
-        ▼
-TF-IDF Vectorization
-        │
-        ▼
-Cosine Similarity
-        │
-        ▼
-Skill Gap Detection
-        │
-        ▼
-Match Score
-Suggestions
+                         ┌────────────────────┐
+                         │ Resume Builder     │
+                         │ Real-Time Preview  │
+                         └─────────┬──────────┘
+                                   │
+                                   ▼
+                           Professional Resume
+
+────────────────────────────────────────────────────────
+
+Resume Upload / Resume + JD Upload
+                │
+                ▼
+        Text Extraction
+     (PyMuPDF / docx2txt)
+                │
+                ▼
+        Text Preprocessing
+                │
+                ▼
+      ┌───────────────────┐
+      │ Resume Only Mode  │
+      └─────────┬─────────┘
+                │
+                ▼
+      ATS Evaluation Engine
+                │
+                ▼
+      ATS Score + Suggestions
+
+────────────────────────────────────────────────────────
+
+      ┌───────────────────┐
+      │ Resume + JD Mode  │
+      └─────────┬─────────┘
+                │
+                ▼
+       TF-IDF Vectorization
+                │
+                ▼
+         Cosine Similarity
+                │
+                ▼
+        Skill Gap Detection
+                │
+                ▼
+       Match Score Generation
+                │
+                ▼
+       Suggestions & Insights
 ```
+
+---
 
 # 🧠 Technology Stack
 
@@ -151,17 +179,21 @@ Suggestions
 - Pandas
 - NumPy
 
+## Model Persistence
+
+- Pickle
+
 ---
 
 # 📊 Dataset
 
-The project utilizes a dataset containing approximately **10,000 resume-job description pairs**.
+The project utilizes a dataset containing approximately **10,000 Resume–Job Description pairs**.
 
 ### Dataset Attributes
 
 | Column Name | Description |
 |------------|------------|
-| Job Applicant Name | Name of Applicant |
+| Job Applicant Name | Applicant Name |
 | Age | Applicant Age |
 | Gender | Gender Information |
 | Race | Race Category |
@@ -169,55 +201,78 @@ The project utilizes a dataset containing approximately **10,000 resume-job desc
 | Resume | Resume Text |
 | Job Roles | Target Job Role |
 | Job Description | Job Description Text |
-| Best Match | Resume-Job Match Label |
+| Best Match | Resume–Job Match Label |
 
 ### Dataset Usage
 
-The dataset is used to build and train the TF-IDF vectorization pipeline, enabling semantic comparison between resumes and job descriptions.
+The dataset is used to build the TF-IDF vectorization pipeline and vocabulary required for semantic text comparison between resumes and job descriptions.
 
 ---
 
-# 📈 ATS Scoring Methodology
+# ⚙️ Working of the System
 
-When no Job Description is provided, the ATS score is calculated using four evaluation pillars:
+## Mode 1: Resume-Only Analysis
 
-| Component | Weight |
-|------------|---------|
-| Structure Analysis | 25% |
-| Skills Analysis | 25% |
-| Experience Analysis | 25% |
-| Readability Analysis | 25% |
+When a user uploads only a resume:
 
-### Structure Analysis
+### Step 1: Resume Parsing
 
-Checks for the presence of:
+The system extracts text from:
+
+- PDF files using PyMuPDF
+- DOCX files using docx2txt
+
+### Step 2: Structure Analysis
+
+Checks for important sections:
 
 - Education
 - Skills
 - Projects
 - Experience
 
-### Skills Analysis
+### Step 3: Skills Analysis
 
-Evaluates technical skills identified from a predefined technical skills repository.
+The system compares resume content against a predefined technical skills repository.
 
-### Experience Analysis
+Example:
+
+- Python
+- Java
+- SQL
+- Flask
+- HTML
+- CSS
+- Git
+- Machine Learning
+
+### Step 4: Experience Analysis
+
+Identifies:
+
+- Action Verbs
+- Achievement Statements
+- Quantified Results
+
+Examples:
+
+- Developed
+- Created
+- Optimized
+- Managed
+- Led
+
+### Step 5: Readability Analysis
 
 Evaluates:
 
-- Action verbs
-- Quantified achievements
-- Impact-oriented statements
+- Resume Length
+- Content Density
+- Overall Readability
 
-### Readability Analysis
+### Step 6: ATS Score Generation
 
-Evaluates:
-
-- Resume length
-- Content density
-- Overall readability
-
-### Final ATS Score
+The final ATS score is calculated using:
 
 ```text
 ATS Score =
@@ -227,42 +282,54 @@ Experience Score +
 Readability Score
 ```
 
+### Step 7: Suggestion Generation
+
+The system provides recommendations such as:
+
+- Missing Sections
+- Weak Skill Coverage
+- Lack of Quantified Achievements
+- Poor Readability
+
 ---
 
-# 🎯 Job Matching Methodology
+# 🎯 Mode 2: Resume + Job Description Matching
+
+When both Resume and Job Description are uploaded:
 
 ### Step 1: Text Extraction
 
-Extract text from Resume and Job Description.
+Extract text from Resume and JD.
 
-### Step 2: Text Preprocessing
+### Step 2: Text Cleaning
 
 - Lowercasing
-- Removing punctuation
-- Removing extra spaces
+- Punctuation Removal
+- Whitespace Normalization
 
 ### Step 3: TF-IDF Vectorization
 
-Convert resume and job description into numerical vectors.
+Resume and JD text are converted into numerical vectors.
 
 ### Step 4: Cosine Similarity
 
-Measure semantic similarity between resume and job description.
+Measures semantic similarity between Resume and Job Description.
 
-### Step 5: Skill Gap Analysis
+### Step 5: Skill Gap Detection
 
-Identify:
+The system identifies:
 
 - Matching Skills
 - Missing Skills
+- Required Skills
 
 ### Step 6: Structure Evaluation
 
-Analyze completeness of the resume.
+Checks completeness of the resume.
 
-### Step 7: Match Score Generation
+### Step 7: Match Score Calculation
 
-The final score is calculated using:
+The final score is generated using:
 
 ```text
 Match Score =
@@ -273,6 +340,26 @@ Match Score =
 (Structure Score × 20)
 ```
 
+### Step 8: Recommendation Generation
+
+Provides:
+
+- Missing Skills
+- ATS Improvements
+- Keyword Suggestions
+- Resume Enhancement Recommendations
+
+---
+
+# 📈 ATS Scoring Methodology
+
+| Component | Weight |
+|------------|---------|
+| Structure Analysis | 25% |
+| Skills Analysis | 25% |
+| Experience Analysis | 25% |
+| Readability Analysis | 25% |
+
 ---
 
 # 📂 Project Structure
@@ -281,7 +368,6 @@ Match Score =
 Smart-Resume-Analyzer/
 │
 ├── app.py
-├── train_model.py
 ├── ml_logic.py
 ├── requirements.txt
 │
@@ -295,60 +381,46 @@ Smart-Resume-Analyzer/
 │
 ├── uploads/
 │
-└── dataset/
-```
-
----
-
-# ⚙️ Installation
-
-### Clone Repository
-
-```bash
-git clone https://github.com/DurgaDevi335/Smart-Resume-Analyzer.git
-```
-
-### Navigate to Project Directory
-
-```bash
-cd Smart-Resume-Analyzer
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Run Application
-
-```bash
-python app.py
+├── dataset/
+│
+└── README.md
 ```
 
 ---
 
 # 📸 Screenshots
 
-## Home Page
+## 🏠 Dashboard
 
-Add screenshot here.
+Add dashboard screenshot here.
 
 ```markdown
-![Home Page](screenshots/home.png)
+![Dashboard](screenshots/dashboard.png)
 ```
 
-## Resume Analysis
+---
 
-Add screenshot here.
+## 📝 Resume Builder
+
+The built-in Resume Builder allows users to create a professional resume from scratch with real-time formatting preview.
+
+![Resume Builder](screenshots/resume_builder.png)
+
+---
+
+## 📄 Resume Analysis
+
+Add Resume Analysis Result Screenshot.
 
 ```markdown
 ![Resume Analysis](screenshots/resume_analysis.png)
 ```
 
-## Resume-JD Matching
+---
 
-Add screenshot here.
+## 🎯 Resume-JD Matching
+
+Add Resume-JD Matching Screenshot.
 
 ```markdown
 ![JD Matching](screenshots/jd_matching.png)
@@ -358,23 +430,29 @@ Add screenshot here.
 
 # 🔮 Future Enhancements
 
-- Advanced NLP-based skill extraction
-- Dynamic skill database
-- Resume ranking system
-- Multi-job comparison
-- Interview question recommendations
-- AI-powered resume suggestions
-- Deep Learning-based semantic matching
+- Advanced NLP-based Skill Extraction
+- Dynamic Skill Repository
+- Resume Ranking System
+- Multi-JD Comparison
+- AI-Powered Resume Suggestions
+- Interview Question Recommendations
+- Deep Learning-Based Semantic Matching
+- Personalized Career Guidance
 
 ---
 
 # 👩‍💻 Author
 
-**Durga Devi Ravipati**
+## Durga Devi Ravipati
+
+**B.Tech – Computer Science and Engineering (Cyber Security)**  
+Shri Vishnu Engineering College for Women
+
+### Connect With Me
 
 - GitHub: https://github.com/DurgaDevi335
 - LinkedIn: https://www.linkedin.com/in/durga-devi-ravipati
 
 ---
 
-## ⭐ If you found this project useful, consider giving it a star!
+## ⭐ If you found this project useful, consider giving it a star on GitHub!
